@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video Upload</title>
+  <title>Video Upload Portal</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>Upload Your Video</h1>
-    <input type="file" id="videoFile" accept=".mp4, .avi, .mov" />
+    <input type="file" id="videoFile" accept=".mp4,.avi,.mov" />
     <button onclick="uploadVideo()">Upload</button>
-    <div class="progress-bar"><div id="progressFill" class="progress-bar-fill">0%</div></div>
-    <div id="statusText"></div>
+    <div class="progress-bar">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    <p id="statusText"></p>
     <video id="videoPreview" controls style="display: none;"></video>
   </div>
-  <script src="script.js"></script>
+  <script src="upload.js"></script>
 </body>
 </html>
