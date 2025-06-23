@@ -11,8 +11,8 @@ async function uploadVideo() {
     return (statusText.textContent = "Allowed formats: .mp4, .avi, .mov");
   }
 
-  if (file.size > 200 * 1024 * 1024) {
-    return (statusText.textContent = "Max file size is 200MB.");
+  if (file.size > 500 * 1024 * 1024) {
+    return (statusText.textContent = "Max file size is 500MB.");
   }
 
   const blobName = encodeURIComponent(file.name);
