@@ -31,7 +31,7 @@ async function uploadVideo() {
 
   // Build the full blob URL
   const uploadUrl = `https://${accountName}.blob.core.windows.net/${containerName}/${blobName}?${sasToken}`;
-  const blobUrl = `https://hrvideos.blob.core.windows.net/hcmatrix?sp=racw&st=2025-08-08T13:50:25Z&se=2025-10-31T22:05:25Z&spr=https&sv=2024-11-04&sr=c&sig=5iG2AQkiFC0hufZsYFc2BXznFy5pWVpLYZkJjxHzdyI%3D`;
+  const blobUrl = `https://hrvideos.blob.core.windows.net/vdeos?sp=racw&st=2025-08-08T13:50:25Z&se=2025-10-31T22:05:25Z&spr=https&sv=2024-11-04&sr=c&sig=5iG2AQkiFC0hufZsYFc2BXznFy5pWVpLYZkJjxHzdyI%3D`;
 
   const xhr = new XMLHttpRequest();
   xhr.open("PUT", uploadUrl, true);
