@@ -4,20 +4,34 @@ async function uploadVideo() {
   const statusText = document.getElementById("statusText");
   const videoPreview = document.getElementById("videoPreview");
 
-  if (!file) return (statusText.textContent = "Please select a file.");
+  if (!file) {
+    statusText.textContent = "Please select a file.";
+    return;
+  }
 
   const allowedTypes = ["video/mp4", "video/avi", "video/quicktime"];
   if (!allowedTypes.includes(file.type)) {
-    return (statusText.textContent = "Allowed formats: .mp4, .avi, .mov");
+    statusText.textContent = "Allowed formats: .mp4, .avi, .mov";
+    return;
   }
 
   if (file.size > 500 * 1024 * 1024) {
-    return (statusText.textContent = "Max file size is 500MB.");
+    statusText.textContent = "Max file size is 500MB.";
+    return;
   }
 
+  // Your container SAS token from Azure
+  const sasToken =
+    "sp=racw&st=2025-08-08T13:50:25Z&se=2025-10-31T22:05:25Z&spr=https&sv=2024-11-04&sr=c&sig=5iG2AQkiFC0hufZsYFc2BXznFy5pWVpLYZkJjxHzdyI%3D";
+
+  // Storage details
+  const accountName = "hrvideos";
+  const containerName = "vdeos";
   const blobName = encodeURIComponent(file.name);
-  const sasToken = "sv=2024-11-04&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2026-12-30T17:21:38Z&st=2025-08-08T09:06:38Z&spr=https&sig=UmE8bkTKTVBkL685t2Dg4UAlpz%2F2uxHR9SeogqFHKlo%3D";
-  const uploadUrl = `https://hrvideos.blob.core.windows.net/vdeos/${blobName}?${sasToken}`;
+
+  // Build the full blob URL
+  const uploadUrl = `https://${accountName}.blob.core.windows.net/${containerName}/${blobName}?${sasToken}`;
+  const blobUrl = `https://hrvideos.blob.core.windows.net/hcmatrix?sp=racw&st=2025-08-08T13:50:25Z&se=2025-10-31T22:05:25Z&spr=https&sv=2024-11-04&sr=c&sig=5iG2AQkiFC0hufZsYFc2BXznFy5pWVpLYZkJjxHzdyI%3D`;
 
   const xhr = new XMLHttpRequest();
   xhr.open("PUT", uploadUrl, true);
@@ -26,17 +40,17 @@ async function uploadVideo() {
   xhr.upload.onprogress = (e) => {
     if (e.lengthComputable) {
       const percent = (e.loaded / e.total) * 100;
-      progressBar.style.width = percent + "%";
+      progressBar.style.width = percent.toFixed(2) + "%";
     }
   };
 
   xhr.onload = () => {
     if (xhr.status === 201) {
       statusText.textContent = "✅ Upload successful!";
-      videoPreview.src = uploadUrl.split("?")[0];
+      videoPreview.src = blobUrl;
       videoPreview.style.display = "block";
     } else {
-      statusText.textContent = "❌ Upload failed. Check your SAS token.";
+      statusText.textContent = `❌ Upload failed (Status ${xhr.status}). Check your SAS token validity.`;
     }
   };
 
@@ -44,5 +58,6 @@ async function uploadVideo() {
     statusText.textContent = "❌ Network or server error during upload.";
   };
 
+  statusText.textContent = "⏳ Uploading...";
   xhr.send(file);
 }
