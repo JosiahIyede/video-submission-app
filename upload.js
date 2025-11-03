@@ -22,7 +22,7 @@ async function uploadVideo() {
 
   // Your container SAS token from Azure
   const sasToken =
-    "sp=racw&st=2025-08-08T14:24:35Z&se=2025-10-31T22:39:35Z&spr=https&sv=2024-11-04&sr=c&sig=1kd5io59VTTkyV5Hs1Z0FJGOpm1Iqey7udonmmCFSrc%3D";
+    "sp=racwli&st=2025-11-03T17:01:47Z&se=2026-05-30T01:16:47Z&spr=https&sv=2024-11-04&sr=c&sig=cK6JnKzbTUpwlqTwcC8nYTu%2FsXpbTGEwW9Ezcqc5d78%3D";
 
   // Storage details
   const accountName = "hrvideos";
@@ -31,7 +31,7 @@ async function uploadVideo() {
 
   // Build the full blob URL
   const uploadUrl = `https://${accountName}.blob.core.windows.net/${containerName}/${blobName}?${sasToken}`;
-  const blobUrl = `https://hrvideos.blob.core.windows.net/vdeos?sp=racw&st=2025-08-08T13:50:25Z&se=2025-10-31T22:05:25Z&spr=https&sv=2024-11-04&sr=c&sig=5iG2AQkiFC0hufZsYFc2BXznFy5pWVpLYZkJjxHzdyI%3D`;
+  const blobUrl = `https://hrvideos.blob.core.windows.net/vdeos?sp=racwli&st=2025-11-03T17:01:47Z&se=2026-05-30T01:16:47Z&spr=https&sv=2024-11-04&sr=c&sig=cK6JnKzbTUpwlqTwcC8nYTu%2FsXpbTGEwW9Ezcqc5d78%3D`;
 
   const xhr = new XMLHttpRequest();
   xhr.open("PUT", uploadUrl, true);
