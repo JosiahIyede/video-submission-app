@@ -9,9 +9,18 @@ async function uploadVideo() {
     return;
   }
 
-  const allowedTypes = ["video/mp4", "video/avi", "video/quicktime"];
+  const allowedTypes = [
+  "video/mp4",
+  "video/avi",
+  "video/quicktime",
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+];
+
   if (!allowedTypes.includes(file.type)) {
-    statusText.textContent = "Allowed formats: .mp4, .avi, .mov";
+    statusText.textContent =
+  "Allowed formats: .mp4, .avi, .mov, .pdf, .doc, .docx";
     return;
   }
 
@@ -45,14 +54,25 @@ async function uploadVideo() {
   };
 
   xhr.onload = () => {
-    if (xhr.status === 201) {
-      statusText.textContent = "✅ Upload successful!";
-      videoPreview.src = blobUrl;
+  if (xhr.status === 201) {
+    statusText.textContent = "✅ Upload successful!";
+
+    const fileUrl = `https://${accountName}.blob.core.windows.net/${containerName}/${blobName}`;
+
+    if (file.type.startsWith("video/")) {
+      videoPreview.src = fileUrl;
       videoPreview.style.display = "block";
     } else {
-      statusText.textContent = `❌ Upload failed (Status ${xhr.status}). Check your SAS token validity.`;
+      videoPreview.style.display = "none";
+      statusText.innerHTML += `<br>
+        <a href="${fileUrl}" target="_blank">📄 View / Download file</a>`;
     }
-  };
+  } else {
+    statusText.textContent =
+      `❌ Upload failed (Status ${xhr.status}). Check your SAS token.`;
+  }
+};
+
 
   xhr.onerror = () => {
     statusText.textContent = "❌ Network or server error during upload.";
