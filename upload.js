@@ -9,14 +9,19 @@ async function uploadVideo() {
     return;
   }
 
-  const allowedTypes = [
+ const allowedTypes = [
   "video/mp4",
   "video/avi",
   "video/quicktime",
   "application/pdf",
   "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/zip",
+  "application/x-zip-compressed",
+  "application/vnd.rar",
+  "application/x-rar-compressed"
 ];
+
 
   if (!allowedTypes.includes(file.type)) {
     statusText.textContent =
