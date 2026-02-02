@@ -10,17 +10,27 @@ async function uploadVideo() {
   }
 
  const allowedTypes = [
+  // Videos
   "video/mp4",
   "video/avi",
   "video/quicktime",
+
+  // Documents
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+  // Archives
   "application/zip",
   "application/x-zip-compressed",
   "application/vnd.rar",
-  "application/x-rar-compressed"
+  "application/x-rar-compressed",
+
+  // Images
+  "image/jpeg",
+  "image/png"
 ];
+
 
 
   if (!allowedTypes.includes(file.type)) {
