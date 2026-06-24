@@ -2,23 +2,201 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document Upload Portal</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="container">
-    <h1>Upload Your Document</h1>
-    <input type="file" id="videoFile" accept=".mp4,.avi,.mov" />
-    <button onclick="uploadVideo()">Upload</button>
+  <div class="page-wrapper">
+    <!-- Top nav bar -->
+    <header class="top-bar">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="8" fill="#0A0F26"/>
+            <text x="6" y="26" font-family="Inter, sans-serif" font-weight="700" font-size="20" fill="#3B82F6">H</text>
+            <text x="14" y="18" font-family="Inter, sans-serif" font-weight="700" font-size="9" fill="#ffffff">C</text>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">Snapnet Solutions</span>
+          <span class="logo-tagline">Secure Video Portal</span>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#upload-section">Upload</a>
+        <a href="#" id="navDownload">Downloads</a>
+      </div>
+    </header>
 
-    <div class="progress-bar">
-      <div class="progress-bar-fill" id="progressBar"></div>
-    </div>
+    <!-- Hero / Upload Section -->
+    <main class="main-content">
+      <section class="hero-section" id="upload-section">
+        <div class="hero-text">
+          <h1>Upload Your Video</h1>
+          <p class="hero-sub">Upload the assessment video.<br/>Accepted formats: <strong>.mp4</strong>, <strong>.avi</strong>, <strong>.mov</strong> — Max <strong>500 MB</strong>.</p>
+        </div>
 
-    <p id="statusText"></p>
-    <video id="videoPreview" controls style="display: none;"></video>
+        <!-- Upload Card -->
+        <div class="upload-card" id="uploadCard">
+          <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-inner">
+              <svg class="upload-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="48" height="48" rx="12" fill="#EFF6FF"/>
+                <path d="M24 32V16M24 16L18 22M24 16L30 22" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 30V34C14 34.5523 14.4477 35 15 35H33C33.5523 35 34 34.5523 34 34V30" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="drop-title">Drag & drop your video here</p>
+              <p class="drop-subtitle">or click to browse files</p>
+              <input type="file" id="videoFile" accept=".mp4,.avi,.mov" />
+            </div>
+          </div>
+
+          <!-- File info (shown after selection) -->
+          <div class="file-info" id="fileInfo" style="display:none;">
+            <div class="file-info-row">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="#DBEAFE"/><path d="M6 10L9 13L14 7" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span id="fileName" class="file-name">video.mp4</span>
+              <span id="fileSize" class="file-size">0 MB</span>
+              <button class="remove-file" onclick="clearFile()" title="Remove file">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4L12 12" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress -->
+          <div class="progress-section" id="progressSection" style="display:none;">
+            <div class="progress-header">
+              <span id="progressLabel">Uploading…</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progressBar"></div>
+            </div>
+          </div>
+
+          <!-- Status -->
+          <p id="statusText" class="status-text"></p>
+
+          <!-- Upload Button -->
+          <button class="btn-upload" id="uploadBtn" onclick="uploadVideo()">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2V12M9 2L5 6M9 2L13 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 11V14C3 14.5523 3.44772 15 4 15H14C14.5523 15 15 14.5523 15 14V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Upload Video
+          </button>
+        </div>
+
+        <!-- Video Preview -->
+        <div class="preview-section" id="previewSection" style="display:none;">
+          <h3>Preview</h3>
+          <video id="videoPreview" controls></video>
+        </div>
+      </section>
+
+      <!-- Info cards -->
+      <section class="info-cards">
+        <div class="info-card">
+          <div class="info-card-icon" style="background:#EFF6FF;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#3B82F6" stroke-width="1.8"/><path d="M12 16V12M12 8H12.01" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h4>Secure Upload</h4>
+          <p>Videos are stored for the duration of the assessment period.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon" style="background:#F0FDF4;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h4>Quick & Easy</h4>
+          <p>Drag, drop, and upload. Progress tracking keeps you informed.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon" style="background:#FFF7ED;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#EA580C" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </div>
+          <h4>Team Access</h4>
+          <p>Uploaded videos are instantly available for review.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2026 Snapnet Solutions Limited. All rights reserved.</p>
+    </footer>
   </div>
+
   <script src="upload.js"></script>
+  <script>
+    // ---- Drop zone & file selection UI logic ----
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('videoFile');
+    const fileInfo = document.getElementById('fileInfo');
+    const uploadCard = document.getElementById('uploadCard');
+
+    // Click to browse
+    dropZone.addEventListener('click', (e) => {
+      if (e.target !== fileInput) fileInput.click();
+    });
+
+    // Show file info on selection
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) showFileInfo(fileInput.files[0]);
+    });
+
+    // Drag events
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length > 0) {
+        fileInput.files = e.dataTransfer.files;
+        showFileInfo(e.dataTransfer.files[0]);
+      }
+    });
+
+    function showFileInfo(file) {
+      const allowedTypes = ["video/mp4", "video/avi", "video/quicktime"];
+      if (!allowedTypes.includes(file.type)) {
+        document.getElementById('statusText').textContent = 'Allowed formats: .mp4, .avi, .mov';
+        document.getElementById('statusText').className = 'status-text error';
+        return;
+      }
+      if (file.size > 500 * 1024 * 1024) {
+        document.getElementById('statusText').textContent = 'Max file size is 500 MB.';
+        document.getElementById('statusText').className = 'status-text error';
+        return;
+      }
+      document.getElementById('statusText').textContent = '';
+      document.getElementById('statusText').className = 'status-text';
+      document.getElementById('fileName').textContent = file.name;
+      document.getElementById('fileSize').textContent = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+      fileInfo.style.display = 'flex';
+      dropZone.style.display = 'none';
+    }
+
+    function clearFile() {
+      fileInput.value = '';
+      fileInfo.style.display = 'none';
+      dropZone.style.display = 'flex';
+      document.getElementById('progressSection').style.display = 'none';
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('statusText').textContent = '';
+      document.getElementById('previewSection').style.display = 'none';
+      document.getElementById('videoPreview').src = '';
+      document.getElementById('uploadBtn').disabled = false;
+      document.getElementById('uploadBtn').innerHTML = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2V12M9 2L5 6M9 2L13 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 11V14C3 14.5523 3.44772 15 4 15H14C14.5523 15 15 14.5523 15 14V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Upload Video';
+    }
+
+    // Expose clearFile & UI helpers for upload.js
+    window.clearFile = clearFile;
+    window.showProgress = function() {
+      document.getElementById('progressSection').style.display = 'block';
+      document.getElementById('uploadBtn').disabled = true;
+      document.getElementById('uploadBtn').innerHTML = 'Uploading…';
+    };
+  </script>
 </body>
 </html>
